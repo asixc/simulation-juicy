@@ -305,7 +305,7 @@ const App = () => {
         </Col>
         <Col flex={9}>
           <Input suffix="grams" type="text" style={{width: 100 }} value={expectedHarvest} disabled />
-          <Input prefix="Number of simulations:" type="number" style={{width: 250 }}  defaultValue={numberSimulations} min={1} onChange={handleNumberSimulationsChange}/>
+          {/* <Input prefix="Number of simulations:" type="number" style={{width: 250 }}  defaultValue={numberSimulations} min={1} onChange={handleNumberSimulationsChange}/> */}
           <Slider defaultValue={[47]} min={45} max={55} onChange={handleExpectedHarvest} tipFormatter={formatter} marks={marks}/>
           
         </Col>
