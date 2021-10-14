@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import {
+  Layout,
   DatePicker,
   message,
   InputNumber,
@@ -19,7 +20,8 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import dayjs from "dayjs";
 import { v4 as uuidv4 } from 'uuid';
 
-const PERIOD_OF_DAYS = 90;
+const { Content } = Layout;
+const PERIOD_OF_DAYS = 108;
 const { Text } = Typography;
 const COLUMNS = [
   {
@@ -99,7 +101,7 @@ const App = () => {
   };
   const getNextPlantedDay = (datePlant) => {
     let currentDate = datePlant.toDate();
-    while (currentDate.getDay() !== 1 && currentDate.getDay() !== 5) {
+    while (currentDate.getDay() !== 2 && currentDate.getDay() !== 5) {
       currentDate.setDate(currentDate.getDate() + 1);
     }
     return currentDate;
@@ -291,20 +293,21 @@ const App = () => {
   };
 
   return (
-    <div style={{ width: 800, margin: "100px auto" }}>
-      <Row>
-        <Col flex={9}>
+<>
+<Content>
+      <Row /*gutter={16}*/ justify="center" style={{marginTop:15}}>
+        <Col xs={23} md={9} align="center" /*flex={9}*/>
           <InputNumber min={1} onChange={handleNumberChange} />
           <DatePicker onChange={handleDateChange} />
           <Button onClick={addPlant} disabled={!nPlants || !date}>
             Añadir compra
           </Button>
         </Col>
-        <Col flex={4}>
+        <Col xs={20} md={4} align="center"  /*flex={4}*/>
           <Text type="secondary" level="h1">JuicyFlash</Text>    
         </Col>
-        <Col flex={9}>
-          <Input suffix="grams" type="text" style={{width: 100 }} value={expectedHarvest} disabled />
+        <Col xs={20} md={9}  /*flex={9}*/>
+          <Input suffix="grams" type="text" style={{ /*width: 100*/ }} value={expectedHarvest} disabled />
           {/* <Input prefix="Number of simulations:" type="number" style={{width: 250 }}  defaultValue={numberSimulations} min={1} onChange={handleNumberSimulationsChange}/> */}
           <Slider defaultValue={[47]} min={45} max={55} onChange={handleExpectedHarvest} tipFormatter={formatter} marks={marks}/>
           
@@ -323,7 +326,8 @@ const App = () => {
       {/* <div style={{ marginTop: 16 }}>
         Selected Date: {date ? date.format('YYYY-MM-DD') : 'None'}
       </div> */}
-    </div>
+    </Content>
+</>
   );
 };
 
