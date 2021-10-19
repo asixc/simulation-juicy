@@ -13,7 +13,8 @@ import {
   Slider,
   Row, 
   Col,
-  Input
+  Input,
+  Space
 } from "antd";
 import "antd/dist/antd.css";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -64,6 +65,18 @@ const COLUMNS = [
     dataIndex: "eqNPlants",
     key: "eqNPlants",
   },
+  {
+    title: 'Action',
+    key: 'action',
+    render: (text) => (
+      <Space size="middle">
+        <a
+        onClick={(e) => {  console.log('text:',text.handleTest(text.nPlants, text.dateBuy))/* this.onDelete(record.key, e); */ }}>
+          Delete 
+        </a>
+      </Space>
+    ),
+  },
 ];
 const marks = {
   45: '45g',
@@ -83,6 +96,15 @@ const App = () => {
   const formatter = (value) => {
     return `${value}g`;
   }
+  const handleTest = (nPlantsDelete, dateDelete) => {
+    let array = [...elements]; 
+    const index = elements.findIndex(buy => buy.date.format('DD-MM-YYYY') === dateDelete && buy.nPlants === nPlantsDelete);
+    if (index !== -1) {
+      array.splice(index, 1);
+      setElements(array);
+      localStorage.setItem('plants', JSON.stringify(array))
+    }
+  };
  
   const handleNumberSimulationsChange = (value) => {
     //message.info(`Selected Date: ${value ? value.format('YYYY-MM-DD') : 'None'}`);
@@ -124,6 +146,7 @@ const App = () => {
     }
     return message.error(`insuficcient data`);
   };
+  
   const getLocalStorage = () => {
 
     if (localStorage.getItem('plants')){
@@ -170,6 +193,7 @@ const App = () => {
           }
       data.push({
         key: uuidv4(),
+        handleTest: handleTest,
         dateBuy: r.date.format("DD-MM-YYYY"),
         nPlants: r.nPlants,
         eqNPlants: npPlant,
@@ -189,6 +213,7 @@ const App = () => {
             key={uuidv4()}
             dataSource={data}
             columns={COLUMNS}
+            elements={elements}
             summary={(pageData) => {
               let totalMin = 0;
               let totalMed = 0;
