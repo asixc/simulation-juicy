@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import {
   Layout,
@@ -79,10 +79,11 @@ const App = () => {
   const [nPlants, setNplants] = useState(0);
   const [expectedHarvest, setExpectedHarvest] = useState(47);
   const [numberSimulations, setNumberOfSimulations] = useState(7);
-  const [date, setDate] = useState(null);
+  const [date, setDate] = useState(null); 
   const formatter = (value) => {
     return `${value}g`;
   }
+ 
   const handleNumberSimulationsChange = (value) => {
     //message.info(`Selected Date: ${value ? value.format('YYYY-MM-DD') : 'None'}`);
     setNumberOfSimulations(value);
@@ -106,13 +107,16 @@ const App = () => {
     }
     return currentDate;
   };
+  
   const addPlant = () => {
     if (date && nPlants) {
       const newPlant = {
         date: date,
         nPlants: nPlants,
       };
-      setElements([...elements, newPlant]);
+      let elementsState = [...elements, newPlant]
+      setElements(elementsState);
+      localStorage.setItem('plants', JSON.stringify(elementsState))
       return message.info(`Selected Date: ${
         date ? date.format("YYYY-MM-DD") : "None"
       }  \n
@@ -120,6 +124,23 @@ const App = () => {
     }
     return message.error(`insuficcient data`);
   };
+  const getLocalStorage = () => {
+
+    if (localStorage.getItem('plants')){
+      let plantsLocalStorage = []
+      JSON.parse(localStorage.getItem('plants')).forEach(({date, nPlants}) => {
+        plantsLocalStorage.push({
+          date: dayjs(date), 
+          nPlants: nPlants
+        })        
+      })
+      setElements(plantsLocalStorage)
+    } 
+  } 
+  useEffect(() => {
+    getLocalStorage();
+  }, []);
+
 /*
   const getList = (e) => {
     return (
