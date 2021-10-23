@@ -71,7 +71,7 @@ const COLUMNS = [
     render: (text) => (
       <Space size="middle">
         <a
-        onClick={(e) => {  console.log('text:',text.handleTest(text.nPlants, text.dateBuy))/* this.onDelete(record.key, e); */ }}>
+        onClick={(e) => {  text.handleTest(text.nPlants, text.dateBuy)/* this.onDelete(record.key, e); */ }}>
           Delete 
         </a>
       </Space>
